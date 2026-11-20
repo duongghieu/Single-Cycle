@@ -25,7 +25,7 @@ if(ALUOp) begin
 		4'b0000: begin //AND
 			ALUControl = 3'b010;
 			if(Funct[0])
-				FlagW = 3'b0110;
+				FlagW = 3'b110;
 		end
 		4'b1100: begin //ORR
 			ALUControl = 3'b011;
