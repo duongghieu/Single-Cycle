@@ -1,0 +1,28 @@
+id,scenario,program_byte_PC,expected,observed,baseline_status
+T01,ADD immediate,0x00,R1=25,R1; PC; NZCV,PASS - Icarus 11.0
+T02,STR then LDR,0x04-0x08,RAM[byte 0]=25; R2=25,address; WriteData; MemWrite; ReadData; R2,PASS - Icarus 11.0
+T03,Separate word addresses,0x10,RAM[byte 4]=90; RAM[byte 0]=25,all RAM words; address,PASS - Icarus 11.0
+T04,Overwrite existing RAM,0x14-0x18,RAM[byte 0]=90; R4=90,RAM; R4,PASS - Icarus 11.0
+T05,Load zero into nonzero register,0x1C-0x24,R5: 7 -> 0; RAM[byte 4]=0,R5; RAM,PASS - Icarus 11.0
+T06,Last aligned RAM word,0x28-0x2C,RAM[byte 1020]=25; R6=25,address; RAM[255]; R6,PASS - Icarus 11.0
+T07,SUB equal and BEQ taken,0x30-0x3C,NZCV=6; PC 0x34 -> 0x3C,PC; saved NZCV; PCSrc,PASS - Icarus 11.0
+T08,SUB unequal and BEQ not taken,0x40-0x48,R7=0xFFFFFFBF; NZCV=8; PC 0x44 -> 0x48,PC; R7; saved NZCV,PASS - Icarus 11.0
+T09,Conditional register write/skip,0x4C-0x50,ADDNE executes; ADDEQ skipped; R8=7,RegWrite; R8,PASS - Icarus 11.0
+T10,Conditional store skipped,0x54,MemWrite=0; RAM[byte 8] unchanged,MemWrite; entire RAM,PASS - Icarus 11.0
+T11,AND mixed bit patterns,0x58,25 AND 90 = 24,R9,PASS - Icarus 11.0
+T12,ORR mixed bit patterns,0x5C,25 OR 90 = 91,R10,PASS - Icarus 11.0
+T13,SUB borrow with S=0,0x60,R11=0xFFFFFFFF; saved flags unchanged,R11; NZCV,PASS - Icarus 11.0
+T14,ADD carry and wrap to zero,0x64,R12=0; NZCV=6,R12; NZCV,PASS - Icarus 11.0
+T15,SUB signed overflow,0x6C,0x80000000 - 1 = 0x7FFFFFFF; NZCV=3,R14; NZCV,PASS - Icarus 11.0
+T16,ADD signed overflow,0x70,0x7FFFFFFF + 1 = 0x80000000; NZCV=9,R14; NZCV,PASS - Icarus 11.0
+T17,Logical flags and V preservation,0x74-0x7C,ANDS: NZCV=5; ORRS register: NZCV=9; ORRS rotated immediate: NZCV=B,NZCV; R9; R10,PASS - Icarus 11.0
+T18,Backward loop and both BEQ outcomes,0x84-0x94,R1 counts 2 -> 1 -> 0; two loop iterations,PC; R1; NZCV,PASS - Icarus 11.0
+T19,Logic all ones and zero,0x94-0x98,R9=0xFFFFFFFF; R10=0,R9; R10,PASS - Icarus 11.0
+T20,R15 read convention,0x9C,R2=PC+8=0xA4,R2; PC,PASS - Icarus 11.0
+T21,Rotated immediate and word load/store,0xA0-0xA8,R3=0x100; RAM[byte 12]=0x100; R4=0x100,R3; RAM; R4,PASS - Icarus 11.0
+T22,Unaligned RAM address policy,0xAC-0xB4,Address 1: write ignored; load returns 0,RAM; ReadData; R7,PASS - Icarus 11.0
+T23,Out of range RAM address policy,0xB8-0xC0,Address 1024: write ignored; load returns 0,RAM; ReadData; R7,PASS - Icarus 11.0
+T24,Write PC,0xC4,PC 0xC4 -> 0xCC; instruction at 0xC8 skipped,PC; PCSrc; RAM,PASS - Icarus 11.0
+T25,Plain arithmetic preserves flags,0xCC,R9=0xFFFFFFFF; NZCV stays 6,R9; NZCV,PASS - Icarus 11.0
+T26,Reset and rerun,Between epochs,PC=0; R0-R14=0; NZCV=0; RAM contents retained,PC; registers; flags; entire RAM,PASS - Icarus 11.0
+T27,Independent final anchors,End of each epoch,All 15 registers and four RAM words match hand-calculated values,Final architectural state,PASS - Icarus 11.0
