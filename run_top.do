@@ -1,7 +1,7 @@
 # ModelSim/Questa: do {D:/your/path/Single-Cycle/run_top.do}
 # Sources and mem.dat are resolved relative to this script.
 onerror {abort all}
-set project_dir {D:/Cuoi ki TKS/Single-Cycle-main/Single-Cycle-main}
+set project_dir [file dirname [file normalize [info script]]]
 cd $project_dir
 
 if {![file exists tb_work]} {
