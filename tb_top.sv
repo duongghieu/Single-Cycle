@@ -1,7 +1,9 @@
 `timescale 1ns/1ps
 
 // Testbench for the supplied 64-word mem.dat.
-// Tests: reset, all seven useful instructions, final B ., and reset/replay.
+// Tests the sample mem.dat program and reset/replay.
+// Covers ADD, SUB, AND, ORR, LSL/LSR and terminal B .
+// LDR/STR and BEQ are tested separately in tb_reference.sv.
 // Run from the directory containing mem.dat (or use run_top.do).
 module tb_top;
     localparam integer CLK_PERIOD = 20; // 50 MHz
